@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absensi Pramuka KSW</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #102a1c;
+            --primary-light: #1b4332;
+            --accent: #2d6a4f;
+            --gold: #d4af37;
+            --bg-dark: #0b1c12;
+            --card-bg: #132e1f;
+            --text-main: #f0fdf4;
+            --text-muted: #86efac;
+            --border: #22543d;
+            --radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-image: radial-gradient(circle at 50% 0%, #1b4332 0%, #0b1c12 75%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .logo-container {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            border: 2px solid var(--gold);
+            overflow: hidden;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .header h1 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .form-body {
+            padding: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group label i {
+            color: var(--gold);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(11, 28, 18, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+        }
+
+        /* File Upload Custom Styling */
+        .file-upload-wrapper {
+            position: relative;
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            background: rgba(11, 28, 18, 0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload-wrapper:hover {
+            border-color: var(--gold);
+            background: rgba(27, 67, 50, 0.3);
+        }
+
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .file-upload-text i {
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        #preview-container {
+            margin-top: 10px;
+            display: none;
+            text-align: center;
+        }
+
+        #preview-img {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 8px;
+            border: 1px solid var(--gold);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--gold) 0%, #b8860b 100%);
+            color: #0b1c12;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .footer-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .footer-link a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Modal Notifikasi */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--gold);
+            padding: 30px;
+            border-radius: var(--radius);
+            text-align: center;
+            max-width: 350px;
+            width: 90%;
+            animation: scaleUp 0.3s ease;
+        }
+
+        @keyframes scaleUp {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-content i {
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .modal-content p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .btn-modal {
+            padding: 10px 20px;
+            background: var(--gold);
+            color: #0b1c12;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <!-- Logo Resmi SMPN 3 Warungkiara -->
+                <img src="1000597492.png" alt="Logo KSW" onerror="this.src='https://via.placeholder.com/80?text=KSW'">
+            </div>
+            <h1>Absensi Pramuka KSW</h1>
+            <p>SMPN 3 Warungkiara</p>
+        </div>
+
+        <div class="form-body">
+            <form id="absensiForm">
+                <div class="form-group">
+                    <label for="nama"><i class="fa-solid fa-user-pen"></i> Nama Lengkap Anggota</label>
+                    <input type="text" id="nama" class="form-control" placeholder="Masukkan nama lengkap..." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="tanggal"><i class="fa-solid fa-calendar-days"></i> Tanggal / Bulan / Tahun Eskul</label>
+                    <input type="date" id="tanggal" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="materi"><i class="fa-solid fa-book-open"></i> Materi yang Dipaparkan</label>
+                    <input type="text" id="materi" class="form-control" placeholder="Contoh: PBB Tongkat / Pioneering..." required>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fa-solid fa-camera"></i> Foto Dokumentasi Kegiatan</label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="foto" accept="image/*" required>
+                        <div class="file-upload-text" id="uploadText">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <span>Klik atau seret foto kegiatan ke sini</span>
+                        </div>
+                    </div>
+                    <div id="preview-container">
+                        <img id="preview-img" alt="Pratinjau Foto">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-paper-plane"></i> Kirim Absensi
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="footer-link">
+        Khusus Pembina: <a href="admin.html" target="_blank">Buka Portal Rekap Data</a>
+    </div>
+
+    <!-- Modal Sukses -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <i class="fa-solid fa-circle-check"></i>
+            <h3>Berhasil Terkirim!</h3>
+            <p>Kehadiran Anda telah tercatat dalam sistem rekapitulasi pembina.</p>
+            <button class="btn-modal" onclick="closeModal()">OK</button>
+        </div>
+    </div>
+
+    <script>
+        // Set default tanggal hari ini
+        document.getElementById('tanggal').valueAsDate = new Date();
+
+        const fotoInput = document.getElementById('foto');
+        const uploadText = document.getElementById('uploadText');
+        const previewContainer = document.getElementById('preview-container');
+        const previewImg = document.getElementById('preview-img');
+        let base64Image = "";
+
+        // Handle File Image to Base64 Preview
+        fotoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    base64Image = event.target.result;
+                    previewImg.src = base64Image;
+                    previewContainer.style.display = 'block';
+                    uploadText.innerHTML = `<i class="fa-solid fa-check-circle" style="color: #2d6a4f;"></i><span>Foto dipilih: ${file.name}</span>`;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Handle Submit Form
+        document.getElementById('absensiForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const nama = document.getElementById('nama').value.trim();
+            const tanggal = document.getElementById('tanggal').value;
+            const materi = document.getElementById('materi').value.trim();
+
+            if (!nama || !tanggal || !materi || !base64Image) {
+                alert('Semua kolom dan foto wajib diisi!');
+                return;
+            }
+
+            // Buat objek data baru
+            const dataAbsen = {
+                id: Date.now(),
+                nama: nama,
+                tanggal: tanggal,
+                materi: materi,
+                foto: base64Image,
+                waktuKirim: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+            };
+
+            // Ambil data lama dari LocalStorage atau buat array kosong
+            let dataList = JSON.parse(localStorage.getItem('absensiPramukaKSW')) || [];
+            
+            // Masukkan data baru ke urutan paling depan
+            dataList.unshift(dataAbsen);
+
+            // Simpan kembali ke LocalStorage
+            localStorage.setItem('absensiPramukaKSW', JSON.stringify(dataList));
+
+            // Tampilkan modal sukses
+            document.getElementById('successModal').style.display = 'flex';
+        });
+
+        function closeModal() {
+            document.getElementById('successModal').style.display = 'none';
+            // Reset form
+            document.getElementById('absensiForm').reset();
+            previewContainer.style.display = 'none';
+            uploadText.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i><span>Klik atau seret foto kegiatan ke sini</span>`;
+            document.getElementById('tanggal').valueAsDate = new Date();
+            base64Image = "";
+        }
+    </script>
+</body>
+  </html>
+  
